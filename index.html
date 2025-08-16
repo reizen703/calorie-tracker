@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smoothie Calorie Tracker</title>
+    <title>Whole Food Calorie Tracker</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -130,65 +130,31 @@
 </head>
 <body>
     <div class="container">
-        <h1>Smoothie Calorie Tracker</h1>
+        <h1>Whole Food Calorie Tracker</h1>
         
         <div class="input-section">
-            <h3>Add Fruits</h3>
-            <label for="fruit-select">Choose Fruit:</label>
-            <select id="fruit-select">
-                <option value="">Select a fruit...</option>
-                <option value="green-apple-small">Green Apple - Small (1 small apple = 55 cal)</option>
-                <option value="green-apple-medium">Green Apple - Medium (1 medium apple = 80 cal)</option>
-                <option value="green-apple-large">Green Apple - Large (1 large apple = 110 cal)</option>
-                <option value="fuji-apple-small">Fuji Apple - Small (1 small apple = 55 cal)</option>
-                <option value="fuji-apple-medium">Fuji Apple - Medium (1 medium apple = 80 cal)</option>
-                <option value="fuji-apple-large">Fuji Apple - Large (1 large apple = 110 cal)</option>
-                <option value="avocado-small">Avocado - Small (1 small avocado = 200 cal)</option>
-                <option value="avocado-medium">Avocado - Medium (1 medium avocado = 250 cal)</option>
-                <option value="avocado-large">Avocado - Large (1 large avocado = 300 cal)</option>
-                <option value="dark-red-cherries">Dark Red Cherries (1 cherry = 4 cal)</option>
-                <option value="frozen-blueberries">Frozen Blueberries (1 cup = 80 cal)</option>
-                <option value="green-grapes">Green Grapes (1 grape = 3 cal)</option>
-                <option value="lemon">Lemon (1 medium lemon = 17 cal)</option>
-                <option value="lime">Lime (1 medium lime = 20 cal)</option>
-                <option value="pineapple">Pineapple (1 cup chunks = 80 cal)</option>
-                <option value="pear">Pear (1 medium pear = 85 cal)</option>
-                <option value="watermelon">Watermelon (1 cup cubed = 46 cal)</option>
+            <h3>Add Food Item</h3>
+            <label for="category-select">Choose Category:</label>
+            <select id="category-select" onchange="updateItemDropdown()">
+                <option value="">Select a category...</option>
+                <option value="fruits">Fruits</option>
+                <option value="vegetables">Vegetables</option>
+                <option value="liquids">Liquids</option>
+                <option value="proteins">Proteins</option>
+                <option value="fats">Fats and Oils</option>
+                <option value="grains">Grains</option>
+                <option value="prepared">Prepared Foods</option>
             </select>
             
-            <label for="fruit-quantity">Quantity:</label>
-            <input type="number" id="fruit-quantity" min="0" step="0.25" value="1" placeholder="e.g., 1, 0.5, 1.25">
-            
-            <button onclick="addFruit()">Add to Daily Total</button>
-        </div>
-        
-        <div class="input-section">
-            <h3>Add Vegetables</h3>
-            <label for="vegetable-select">Choose Vegetable:</label>
-            <select id="vegetable-select">
-                <option value="">Select a vegetable...</option>
-                <option value="spinach">Spinach (1 cup = 7 cal)</option>
-                <option value="kale">Kale (1 cup chopped = 33 cal)</option>
-                <option value="romaine">Romaine (1 cup chopped = 8 cal)</option>
-                <option value="hothouse-cucumber">Hothouse Cucumber (1 whole = 45 cal)</option>
-                <option value="persian-cucumber">Persian Cucumber (1 whole = 20 cal)</option>
-                <option value="celery">Celery (1 stick = 6 cal)</option>
-                <option value="medium-tomato">Medium Tomato (1 tomato = 22 cal)</option>
-                <option value="cherry-tomato">Cherry Tomato (1 tomato = 3 cal)</option>
-                <option value="red-bell-pepper">Red Bell Pepper (1 pepper = 37 cal)</option>
-                <option value="raw-beet-small">Raw Beet - Small (1 small beet = 35 cal)</option>
-                <option value="raw-beet-medium">Raw Beet - Medium (1 medium beet = 60 cal)</option>
-                <option value="raw-beet-large">Raw Beet - Large (1 large beet = 85 cal)</option>
-                <option value="cooked-beet-small">Cooked Beet - Small (1 small beet = 30 cal)</option>
-                <option value="cooked-beet-medium">Cooked Beet - Medium (1 medium beet = 50 cal)</option>
-                <option value="cooked-beet-large">Cooked Beet - Large (1 large beet = 70 cal)</option>
-                <option value="sweet-potato">Sweet Potato (1 cup cubed raw = 114 cal)</option>
+            <label for="item-select">Choose Item:</label>
+            <select id="item-select">
+                <option value="">Select a category first...</option>
             </select>
             
-            <label for="vegetable-quantity">Quantity:</label>
-            <input type="number" id="vegetable-quantity" min="0" step="0.25" value="1" placeholder="e.g., 1, 0.5, 1.25">
+            <label for="quantity">Quantity:</label>
+            <input type="number" id="quantity" min="0" step="0.25" value="1" placeholder="e.g., 1, 0.5, 1.25">
             
-            <button onclick="addVegetable()">Add to Daily Total</button>
+            <button onclick="addItem()">Add to Daily Total</button>
         </div>
         
         <div class="daily-total">
@@ -204,96 +170,144 @@
     </div>
 
     <script>
-        // Calorie data per standard serving size
-        const fruitCalories = {
-            'green-apple-small': { name: 'Green Apple - Small', calories: 55, unit: 'small apple' },
-            'green-apple-medium': { name: 'Green Apple - Medium', calories: 80, unit: 'medium apple' },
-            'green-apple-large': { name: 'Green Apple - Large', calories: 110, unit: 'large apple' },
-            'fuji-apple-small': { name: 'Fuji Apple - Small', calories: 55, unit: 'small apple' },
-            'fuji-apple-medium': { name: 'Fuji Apple - Medium', calories: 80, unit: 'medium apple' },
-            'fuji-apple-large': { name: 'Fuji Apple - Large', calories: 110, unit: 'large apple' },
-            'avocado-small': { name: 'Avocado - Small', calories: 200, unit: 'small avocado' },
-            'avocado-medium': { name: 'Avocado - Medium', calories: 250, unit: 'medium avocado' },
-            'avocado-large': { name: 'Avocado - Large', calories: 300, unit: 'large avocado' },
-            'dark-red-cherries': { name: 'Dark Red Cherries', calories: 4, unit: 'cherry' },
-            'frozen-blueberries': { name: 'Frozen Blueberries', calories: 80, unit: 'cup' },
-            'green-grapes': { name: 'Green Grapes', calories: 3, unit: 'grape' },
-            'lemon': { name: 'Lemon', calories: 17, unit: 'medium lemon' },
-            'lime': { name: 'Lime', calories: 20, unit: 'medium lime' },
-            'pineapple': { name: 'Pineapple', calories: 80, unit: 'cup chunks' },
-            'pear': { name: 'Pear', calories: 85, unit: 'medium pear' },
-            'watermelon': { name: 'Watermelon', calories: 46, unit: 'cup cubed' }
+        // All food data consolidated by category
+        const allFoods = {
+            fruits: {
+                'green-apple-small': { name: 'Green Apple - Small', calories: 55, unit: 'small apple' },
+                'green-apple-medium': { name: 'Green Apple - Medium', calories: 80, unit: 'medium apple' },
+                'green-apple-large': { name: 'Green Apple - Large', calories: 110, unit: 'large apple' },
+                'fuji-apple-small': { name: 'Fuji Apple - Small', calories: 55, unit: 'small apple' },
+                'fuji-apple-medium': { name: 'Fuji Apple - Medium', calories: 80, unit: 'medium apple' },
+                'fuji-apple-large': { name: 'Fuji Apple - Large', calories: 110, unit: 'large apple' },
+                'avocado-small': { name: 'Avocado - Small', calories: 200, unit: 'small avocado' },
+                'avocado-medium': { name: 'Avocado - Medium', calories: 250, unit: 'medium avocado' },
+                'avocado-large': { name: 'Avocado - Large', calories: 300, unit: 'large avocado' },
+                'dark-red-cherries': { name: 'Dark Red Cherries', calories: 4, unit: 'cherry' },
+                'frozen-blueberries': { name: 'Frozen Blueberries', calories: 80, unit: 'cup' },
+                'green-grapes': { name: 'Green Grapes', calories: 3, unit: 'grape' },
+                'lemon': { name: 'Lemon', calories: 17, unit: 'medium lemon' },
+                'lime': { name: 'Lime', calories: 20, unit: 'medium lime' },
+                'pineapple': { name: 'Pineapple', calories: 80, unit: 'cup chunks' },
+                'pear': { name: 'Pear', calories: 85, unit: 'medium pear' },
+                'watermelon': { name: 'Watermelon', calories: 46, unit: 'cup cubed' }
+            },
+            vegetables: {
+                'spinach': { name: 'Spinach', calories: 7, unit: 'cup' },
+                'kale': { name: 'Kale', calories: 33, unit: 'cup chopped' },
+                'romaine': { name: 'Romaine', calories: 8, unit: 'cup chopped' },
+                'hothouse-cucumber': { name: 'Hothouse Cucumber', calories: 45, unit: 'whole cucumber' },
+                'persian-cucumber': { name: 'Persian Cucumber', calories: 20, unit: 'whole cucumber' },
+                'celery': { name: 'Celery', calories: 6, unit: 'stick' },
+                'medium-tomato': { name: 'Medium Tomato', calories: 22, unit: 'tomato' },
+                'cherry-tomato': { name: 'Cherry Tomato', calories: 3, unit: 'tomato' },
+                'red-bell-pepper': { name: 'Red Bell Pepper', calories: 37, unit: 'pepper' },
+                'raw-beet-small': { name: 'Raw Beet - Small', calories: 35, unit: 'small beet' },
+                'raw-beet-medium': { name: 'Raw Beet - Medium', calories: 60, unit: 'medium beet' },
+                'raw-beet-large': { name: 'Raw Beet - Large', calories: 85, unit: 'large beet' },
+                'cooked-beet-small': { name: 'Cooked Beet - Small', calories: 30, unit: 'small beet' },
+                'cooked-beet-medium': { name: 'Cooked Beet - Medium', calories: 50, unit: 'medium beet' },
+                'cooked-beet-large': { name: 'Cooked Beet - Large', calories: 70, unit: 'large beet' },
+                'sweet-potato': { name: 'Sweet Potato', calories: 114, unit: 'cup cubed raw' }
+            },
+            liquids: {
+                'almond-milk': { name: 'Almond Milk', calories: 40, unit: 'cup' },
+                'coconut-milk': { name: 'Coconut Milk', calories: 80, unit: 'cup' },
+                'oat-milk': { name: 'Oat Milk', calories: 120, unit: 'cup' },
+                'soy-milk': { name: 'Soy Milk', calories: 100, unit: 'cup' },
+                'coconut-water': { name: 'Coconut Water', calories: 45, unit: 'cup' }
+            },
+            proteins: {
+                'common-beans-dry': { name: 'Common Beans - Dry', calories: 670, unit: 'cup dry' },
+                'common-beans-cooked': { name: 'Common Beans - Cooked', calories: 230, unit: 'cup cooked' },
+                'chickpeas-dry': { name: 'Chickpeas - Dry', calories: 730, unit: 'cup dry' },
+                'chickpeas-cooked': { name: 'Chickpeas - Cooked', calories: 270, unit: 'cup cooked' },
+                'red-lentils-dry': { name: 'Red Lentils - Dry', calories: 680, unit: 'cup dry' },
+                'red-lentils-cooked': { name: 'Red Lentils - Cooked', calories: 230, unit: 'cup cooked' },
+                'green-brown-lentils-dry': { name: 'Green/Brown Lentils - Dry', calories: 680, unit: 'cup dry' },
+                'green-brown-lentils-cooked': { name: 'Green/Brown Lentils - Cooked', calories: 230, unit: 'cup cooked' },
+                'beluga-lentils-dry': { name: 'Black Beluga Lentils - Dry', calories: 680, unit: 'cup dry' },
+                'beluga-lentils-cooked': { name: 'Black Beluga Lentils - Cooked', calories: 230, unit: 'cup cooked' },
+                'puy-lentils-dry': { name: 'Lentils de Puy - Dry', calories: 680, unit: 'cup dry' },
+                'puy-lentils-cooked': { name: 'Lentils de Puy - Cooked', calories: 230, unit: 'cup cooked' },
+                'egg-large': { name: 'Large Egg', calories: 70, unit: 'egg' },
+                'egg-extra-large': { name: 'Extra-Large Egg', calories: 80, unit: 'egg' }
+            },
+            fats: {
+                'olive-oil': { name: 'Olive Oil', calories: 120, unit: 'tablespoon' },
+                'butter': { name: 'Butter', calories: 100, unit: 'tablespoon' },
+                'pepitas': { name: 'Pepitas', calories: 750, unit: 'cup' },
+                'almonds': { name: 'Almonds', calories: 7, unit: 'almond' },
+                'walnuts': { name: 'Walnuts', calories: 26, unit: 'walnut half' },
+                'brazil-nuts': { name: 'Brazil Nuts', calories: 35, unit: 'nut' }
+            },
+            grains: {
+                'basmati-white-rice-dry': { name: 'Basmati White Rice - Dry', calories: 680, unit: 'cup dry' },
+                'basmati-white-rice-cooked': { name: 'Basmati White Rice - Cooked', calories: 210, unit: 'cup cooked' },
+                'brown-rice-dry': { name: 'Brown Rice - Dry', calories: 690, unit: 'cup dry' },
+                'brown-rice-cooked': { name: 'Brown Rice - Cooked', calories: 220, unit: 'cup cooked' },
+                'quinoa-dry': { name: 'Quinoa - Dry', calories: 630, unit: 'cup dry' },
+                'quinoa-cooked': { name: 'Quinoa - Cooked', calories: 220, unit: 'cup cooked' },
+                'old-fashioned-oats-dry': { name: 'Old Fashioned Oats - Dry', calories: 300, unit: 'cup dry' },
+                'old-fashioned-oats-cooked': { name: 'Old Fashioned Oats - Cooked', calories: 150, unit: 'cup cooked' },
+                'oat-groats-dry': { name: 'Whole Oat Groats - Dry', calories: 310, unit: 'cup dry' },
+                'oat-groats-cooked': { name: 'Whole Oat Groats - Cooked', calories: 160, unit: 'cup cooked' },
+                'buckwheat-dry': { name: 'Buckwheat - Dry', calories: 580, unit: 'cup dry' },
+                'buckwheat-cooked': { name: 'Buckwheat - Cooked', calories: 155, unit: 'cup cooked' }
+            },
+            prepared: {
+                // Prepared foods will be added here
+            }
         };
-        
-        const vegetableCalories = {
-            'spinach': { name: 'Spinach', calories: 7, unit: 'cup' },
-            'kale': { name: 'Kale', calories: 33, unit: 'cup chopped' },
-            'romaine': { name: 'Romaine', calories: 8, unit: 'cup chopped' },
-            'hothouse-cucumber': { name: 'Hothouse Cucumber', calories: 45, unit: 'whole cucumber' },
-            'persian-cucumber': { name: 'Persian Cucumber', calories: 20, unit: 'whole cucumber' },
-            'celery': { name: 'Celery', calories: 6, unit: 'stick' },
-            'medium-tomato': { name: 'Medium Tomato', calories: 22, unit: 'tomato' },
-            'cherry-tomato': { name: 'Cherry Tomato', calories: 3, unit: 'tomato' },
-            'red-bell-pepper': { name: 'Red Bell Pepper', calories: 37, unit: 'pepper' },
-            'raw-beet-small': { name: 'Raw Beet - Small', calories: 35, unit: 'small beet' },
-            'raw-beet-medium': { name: 'Raw Beet - Medium', calories: 60, unit: 'medium beet' },
-            'raw-beet-large': { name: 'Raw Beet - Large', calories: 85, unit: 'large beet' },
-            'cooked-beet-small': { name: 'Cooked Beet - Small', calories: 30, unit: 'small beet' },
-            'cooked-beet-medium': { name: 'Cooked Beet - Medium', calories: 50, unit: 'medium beet' },
-            'cooked-beet-large': { name: 'Cooked Beet - Large', calories: 70, unit: 'large beet' },
-            'sweet-potato': { name: 'Sweet Potato', calories: 114, unit: 'cup cubed raw' }
-        };
-        
+
         let dailyItems = [];
         let itemIdCounter = 0;
         
-        function addFruit() {
-            const fruitSelect = document.getElementById('fruit-select');
-            const quantityInput = document.getElementById('fruit-quantity');
+        function updateItemDropdown() {
+            const categorySelect = document.getElementById('category-select');
+            const itemSelect = document.getElementById('item-select');
+            const selectedCategory = categorySelect.value;
             
-            const selectedFruit = fruitSelect.value;
-            const quantity = parseFloat(quantityInput.value);
+            // Clear the item dropdown
+            itemSelect.innerHTML = '<option value="">Select an item...</option>';
             
-            if (!selectedFruit) {
-                alert('Please select a fruit');
-                return;
+            if (selectedCategory && allFoods[selectedCategory]) {
+                const foods = allFoods[selectedCategory];
+                const foodKeys = Object.keys(foods);
+                
+                if (foodKeys.length === 0) {
+                    itemSelect.innerHTML = '<option value="">No items available in this category</option>';
+                    return;
+                }
+                
+                // Add items for the selected category
+                foodKeys.forEach(foodKey => {
+                    const food = foods[foodKey];
+                    const option = document.createElement('option');
+                    option.value = foodKey;
+                    option.textContent = `${food.name} (1 ${food.unit} = ${food.calories} cal)`;
+                    itemSelect.appendChild(option);
+                });
+            } else if (selectedCategory === '') {
+                itemSelect.innerHTML = '<option value="">Select a category first...</option>';
             }
-            
-            if (!quantity || quantity <= 0) {
-                alert('Please enter a valid quantity');
-                return;
-            }
-            
-            const fruit = fruitCalories[selectedFruit];
-            const totalCalories = Math.round(fruit.calories * quantity);
-            
-            const newItem = {
-                id: itemIdCounter++,
-                name: fruit.name,
-                unit: fruit.unit,
-                quantity: quantity,
-                caloriesPerUnit: fruit.calories,
-                totalCalories: totalCalories,
-                isEditing: false
-            };
-            
-            dailyItems.push(newItem);
-            updateDisplay();
-            
-            // Reset form
-            fruitSelect.value = '';
-            quantityInput.value = '1';
         }
         
-        function addVegetable() {
-            const vegetableSelect = document.getElementById('vegetable-select');
-            const quantityInput = document.getElementById('vegetable-quantity');
+        function addItem() {
+            const categorySelect = document.getElementById('category-select');
+            const itemSelect = document.getElementById('item-select');
+            const quantityInput = document.getElementById('quantity');
             
-            const selectedVegetable = vegetableSelect.value;
+            const selectedCategory = categorySelect.value;
+            const selectedItem = itemSelect.value;
             const quantity = parseFloat(quantityInput.value);
             
-            if (!selectedVegetable) {
-                alert('Please select a vegetable');
+            if (!selectedCategory) {
+                alert('Please select a category');
+                return;
+            }
+            
+            if (!selectedItem) {
+                alert('Please select an item');
                 return;
             }
             
@@ -302,15 +316,15 @@
                 return;
             }
             
-            const vegetable = vegetableCalories[selectedVegetable];
-            const totalCalories = Math.round(vegetable.calories * quantity);
+            const food = allFoods[selectedCategory][selectedItem];
+            const totalCalories = Math.round(food.calories * quantity);
             
             const newItem = {
                 id: itemIdCounter++,
-                name: vegetable.name,
-                unit: vegetable.unit,
+                name: food.name,
+                unit: food.unit,
                 quantity: quantity,
-                caloriesPerUnit: vegetable.calories,
+                caloriesPerUnit: food.calories,
                 totalCalories: totalCalories,
                 isEditing: false
             };
@@ -319,7 +333,8 @@
             updateDisplay();
             
             // Reset form
-            vegetableSelect.value = '';
+            categorySelect.value = '';
+            itemSelect.innerHTML = '<option value="">Select a category first...</option>';
             quantityInput.value = '1';
         }
         
