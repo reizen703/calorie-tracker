@@ -43,7 +43,28 @@ class CalorieTrackerApp {
         UI.updateIngredientsList(ingredients, allFoods);
     }
 
-    // TODO: Copy your other existing functions here and adapt them to use the modules
+    // Essential functions for the app to work
+function updateItemDropdown() {
+    const categorySelect = document.getElementById('category');
+    const itemSelect = document.getElementById('item');
+    const selectedCategory = categorySelect.value;
+    
+    // Clear current options
+    itemSelect.innerHTML = '<option value="">Select an item</option>';
+    
+    // Add items from selected category
+    if (allFoods[selectedCategory]) {
+        for (const [key, food] of Object.entries(allFoods[selectedCategory])) {
+            const option = document.createElement('option');
+            option.value = key;
+            option.textContent = food.name;
+            itemSelect.appendChild(option);
+        }
+    }
+}
+
+// Make function globally available
+window.updateItemDropdown = updateItemDropdown;
 }
 
 // Make functions globally available if needed for HTML onclick handlers
