@@ -7,358 +7,397 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            max-width: 700px;
-            margin: 0 auto;
+            max-width: 600px;
+            margin: 20px auto;
             padding: 20px;
-            background-color: #ffffff;
+            background-color: #f9f9f9;
         }
+        
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
         h1 {
             text-align: center;
             color: #333;
-            font-size: 28px;
-            margin-bottom: 30px;
         }
-        .section {
+        
+        .input-section {
+            margin-bottom: 30px;
+            padding: 15px;
             border: 1px solid #ddd;
-            padding: 20px;
-            margin-bottom: 20px;
             border-radius: 5px;
         }
-        .section h2 {
-            margin-top: 0;
-            color: #333;
-            font-size: 18px;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
+        
         label {
             display: block;
             margin-bottom: 5px;
             font-weight: bold;
-            color: #333;
         }
-        select, input[type="number"] {
+        
+        select, input[type="number"], button {
             padding: 8px;
+            margin: 5px 5px 5px 0;
             border: 1px solid #ccc;
-            border-radius: 3px;
-            font-size: 14px;
+            border-radius: 4px;
         }
-        select {
-            width: 100%;
-            max-width: 400px;
-        }
-        input[type="number"] {
-            width: 100px;
-        }
-        .add-button {
-            background-color: #5cb85c;
+        
+        button {
+            background-color: #4CAF50;
             color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 3px;
             cursor: pointer;
-            font-size: 14px;
+            padding: 10px 15px;
         }
-        .add-button:hover {
-            background-color: #4cae4c;
+        
+        button:hover {
+            background-color: #45a049;
         }
+        
         .daily-total {
-            background-color: #dff0d8;
-            border: 1px solid #d6e9c6;
-            padding: 20px;
-            border-radius: 5px;
-            margin-top: 20px;
-        }
-        .total-display {
-            text-align: center;
             font-size: 24px;
             font-weight: bold;
-            color: #3c763d;
-            margin-bottom: 20px;
+            text-align: center;
+            color: #2e7d32;
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #e8f5e8;
+            border-radius: 5px;
         }
-        .items-header {
-            font-weight: bold;
-            color: #333;
-            margin-bottom: 10px;
+        
+        .daily-items {
+            margin-top: 20px;
         }
-        .daily-item {
+        
+        .item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 8px 0;
-            border-bottom: 1px solid #e0e0e0;
+            padding: 10px;
+            margin: 5px 0;
+            background-color: #f5f5f5;
+            border-radius: 5px;
         }
-        .daily-item:last-child {
-            border-bottom: none;
+        
+        .item-info {
+            flex-grow: 1;
         }
-        .item-description {
-            flex: 1;
-        }
+        
         .item-calories {
-            margin-right: 15px;
             font-weight: bold;
-            color: #3c763d;
+            color: #666;
+            margin-left: 10px;
         }
+        
+        .item-controls {
+            display: flex;
+            gap: 5px;
+        }
+        
         .edit-btn, .remove-btn {
-            margin-left: 5px;
-            padding: 4px 8px;
+            padding: 5px 10px;
             font-size: 12px;
-            border: none;
-            border-radius: 3px;
-            cursor: pointer;
         }
+        
         .edit-btn {
-            background-color: #f0ad4e;
-            color: white;
+            background-color: #2196F3;
         }
+        
         .remove-btn {
-            background-color: #d9534f;
-            color: white;
+            background-color: #f44336;
         }
-        .empty-message {
-            text-align: center;
-            color: #777;
-            font-style: italic;
+        
+        .edit-input {
+            width: 60px;
+            margin-right: 5px;
+        }
+        
+        .save-btn, .cancel-btn {
+            padding: 5px 8px;
+            font-size: 12px;
+        }
+        
+        .save-btn {
+            background-color: #4CAF50;
+        }
+        
+        .cancel-btn {
+            background-color: #999;
         }
     </style>
 </head>
 <body>
-    <h1>Smoothie Calorie Tracker</h1>
-    
-    <div class="section">
-        <h2>Add Fruits</h2>
-        <div class="form-group">
-            <label for="fruitSelect">Choose Fruit:</label>
-            <select id="fruitSelect">
+    <div class="container">
+        <h1>Smoothie Calorie Tracker</h1>
+        
+        <div class="input-section">
+            <h3>Add Fruits</h3>
+            <label for="fruit-select">Choose Fruit:</label>
+            <select id="fruit-select">
                 <option value="">Select a fruit...</option>
-                <option value="greenAppleSmall">Green Apple - Small (1 small apple = 55 cal)</option>
-                <option value="greenAppleMedium">Green Apple - Medium (1 medium apple = 80 cal)</option>
-                <option value="greenAppleLarge">Green Apple - Large (1 large apple = 110 cal)</option>
-                <option value="fujiAppleSmall">Fuji Apple - Small (1 small apple = 55 cal)</option>
-                <option value="fujiAppleMedium">Fuji Apple - Medium (1 medium apple = 80 cal)</option>
-                <option value="fujiAppleLarge">Fuji Apple - Large (1 large apple = 110 cal)</option>
-                <option value="avocadoSmall">Avocado - Small (1 small avocado = 160 cal)</option>
-                <option value="avocadoMedium">Avocado - Medium (1 medium avocado = 230 cal)</option>
-                <option value="avocadoLarge">Avocado - Large (1 large avocado = 320 cal)</option>
-                <option value="darkRedCherries">Dark Red Cherries (1 cherry = 5 cal)</option>
-                <option value="frozenBlueberries">Frozen Blueberries (1 cup = 84 cal)</option>
-                <option value="greenGrapes">Green Grapes (1 grape = 3 cal)</option>
-                <option value="lemon">Lemon (1 medium lemon = 15 cal)</option>
+                <option value="green-apple-small">Green Apple - Small (1 small apple = 55 cal)</option>
+                <option value="green-apple-medium">Green Apple - Medium (1 medium apple = 80 cal)</option>
+                <option value="green-apple-large">Green Apple - Large (1 large apple = 110 cal)</option>
+                <option value="fuji-apple-small">Fuji Apple - Small (1 small apple = 55 cal)</option>
+                <option value="fuji-apple-medium">Fuji Apple - Medium (1 medium apple = 80 cal)</option>
+                <option value="fuji-apple-large">Fuji Apple - Large (1 large apple = 110 cal)</option>
+                <option value="avocado-small">Avocado - Small (1 small avocado = 200 cal)</option>
+                <option value="avocado-medium">Avocado - Medium (1 medium avocado = 250 cal)</option>
+                <option value="avocado-large">Avocado - Large (1 large avocado = 300 cal)</option>
+                <option value="dark-red-cherries">Dark Red Cherries (1 cherry = 4 cal)</option>
+                <option value="frozen-blueberries">Frozen Blueberries (1 cup = 80 cal)</option>
+                <option value="green-grapes">Green Grapes (1 grape = 3 cal)</option>
+                <option value="lemon">Lemon (1 medium lemon = 17 cal)</option>
                 <option value="lime">Lime (1 medium lime = 20 cal)</option>
-                <option value="pineappleChunks">Pineapple (1 cup chunks = 82 cal)</option>
-                <option value="pear">Pear (1 medium pear = 100 cal)</option>
-                <option value="watermelonCubed">Watermelon (1 cup cubed = 46 cal)</option>
+                <option value="pineapple">Pineapple (1 cup chunks = 80 cal)</option>
+                <option value="pear">Pear (1 medium pear = 85 cal)</option>
+                <option value="watermelon">Watermelon (1 cup cubed = 46 cal)</option>
             </select>
+            
+            <label for="fruit-quantity">Quantity:</label>
+            <input type="number" id="fruit-quantity" min="0" step="0.25" value="1" placeholder="e.g., 1, 0.5, 1.25">
+            
+            <button onclick="addFruit()">Add to Daily Total</button>
         </div>
-        <div class="form-group">
-            <label for="fruitQuantity">Quantity:</label>
-            <input type="number" id="fruitQuantity" min="0" step="0.5" value="1">
-            <button class="add-button" onclick="addFruit()">Add to Daily Total</button>
-        </div>
-    </div>
-
-    <div class="section">
-        <h2>Add Vegetables</h2>
-        <div class="form-group">
-            <label for="vegetableSelect">Choose Vegetable:</label>
-            <select id="vegetableSelect">
+        
+        <div class="input-section">
+            <h3>Add Vegetables</h3>
+            <label for="vegetable-select">Choose Vegetable:</label>
+            <select id="vegetable-select">
                 <option value="">Select a vegetable...</option>
                 <option value="spinach">Spinach (1 cup = 7 cal)</option>
                 <option value="kale">Kale (1 cup chopped = 33 cal)</option>
                 <option value="romaine">Romaine (1 cup chopped = 8 cal)</option>
-                <option value="hothouseCucumber">Hothouse Cucumber (1 whole = 45 cal)</option>
-                <option value="persianCucumber">Persian Cucumber (1 whole = 20 cal)</option>
+                <option value="hothouse-cucumber">Hothouse Cucumber (1 whole = 45 cal)</option>
+                <option value="persian-cucumber">Persian Cucumber (1 whole = 20 cal)</option>
                 <option value="celery">Celery (1 stick = 6 cal)</option>
-                <option value="mediumTomato">Medium Tomato (1 tomato = 22 cal)</option>
-                <option value="cherryTomato">Cherry Tomato (1 tomato = 3 cal)</option>
-                <option value="redBellPepper">Red Bell Pepper (1 pepper = 37 cal)</option>
-                <option value="rawBeetSmall">Raw Beet - Small (1 small beet = 35 cal)</option>
-                <option value="rawBeetMedium">Raw Beet - Medium (1 medium beet = 44 cal)</option>
-                <option value="rawBeetLarge">Raw Beet - Large (1 large beet = 58 cal)</option>
-                <option value="cookedBeetSmall">Cooked Beet - Small (1 small beet = 25 cal)</option>
-                <option value="cookedBeetMedium">Cooked Beet - Medium (1 medium beet = 37 cal)</option>
-                <option value="cookedBeetLarge">Cooked Beet - Large (1 large beet = 49 cal)</option>
-                <option value="sweetPotatoCubed">Sweet Potato (1 cup cubed raw = 103 cal)</option>
+                <option value="medium-tomato">Medium Tomato (1 tomato = 22 cal)</option>
+                <option value="cherry-tomato">Cherry Tomato (1 tomato = 3 cal)</option>
+                <option value="red-bell-pepper">Red Bell Pepper (1 pepper = 37 cal)</option>
+                <option value="raw-beet-small">Raw Beet - Small (1 small beet = 35 cal)</option>
+                <option value="raw-beet-medium">Raw Beet - Medium (1 medium beet = 60 cal)</option>
+                <option value="raw-beet-large">Raw Beet - Large (1 large beet = 85 cal)</option>
+                <option value="cooked-beet-small">Cooked Beet - Small (1 small beet = 30 cal)</option>
+                <option value="cooked-beet-medium">Cooked Beet - Medium (1 medium beet = 50 cal)</option>
+                <option value="cooked-beet-large">Cooked Beet - Large (1 large beet = 70 cal)</option>
+                <option value="sweet-potato">Sweet Potato (1 cup cubed raw = 114 cal)</option>
             </select>
+            
+            <label for="vegetable-quantity">Quantity:</label>
+            <input type="number" id="vegetable-quantity" min="0" step="0.25" value="1" placeholder="e.g., 1, 0.5, 1.25">
+            
+            <button onclick="addVegetable()">Add to Daily Total</button>
         </div>
-        <div class="form-group">
-            <label for="vegetableQuantity">Quantity:</label>
-            <input type="number" id="vegetableQuantity" min="0" step="0.5" value="1">
-            <button class="add-button" onclick="addVegetable()">Add to Daily Total</button>
+        
+        <div class="daily-total">
+            Daily Total: <span id="total-calories">0</span> calories
         </div>
-    </div>
-
-    <div class="daily-total">
-        <div class="total-display" id="totalDisplay">Daily Total: 0 calories</div>
-        <div class="items-header">Today's Items:</div>
-        <div id="dailyItems">
-            <div class="empty-message">No items added yet. Start adding ingredients above!</div>
+        
+        <div class="daily-items">
+            <h3>Today's Items:</h3>
+            <div id="items-list">
+                <p style="text-align: center; color: #666;">No items added yet</p>
+            </div>
         </div>
     </div>
 
     <script>
-        const fruitData = {
-            greenAppleSmall: { name: "green apple (small)", calories: 55, unit: "apple" },
-            greenAppleMedium: { name: "green apple (medium)", calories: 80, unit: "apple" },
-            greenAppleLarge: { name: "green apple (large)", calories: 110, unit: "apple" },
-            fujiAppleSmall: { name: "fuji apple (small)", calories: 55, unit: "apple" },
-            fujiAppleMedium: { name: "fuji apple (medium)", calories: 80, unit: "apple" },
-            fujiAppleLarge: { name: "fuji apple (large)", calories: 110, unit: "apple" },
-            avocadoSmall: { name: "avocado (small)", calories: 160, unit: "avocado" },
-            avocadoMedium: { name: "avocado (medium)", calories: 230, unit: "avocado" },
-            avocadoLarge: { name: "avocado (large)", calories: 320, unit: "avocado" },
-            darkRedCherries: { name: "dark red cherries", calories: 5, unit: "cherry" },
-            frozenBlueberries: { name: "frozen blueberries", calories: 84, unit: "cup" },
-            greenGrapes: { name: "green grapes", calories: 3, unit: "grape" },
-            lemon: { name: "lemon", calories: 15, unit: "lemon" },
-            lime: { name: "lime", calories: 20, unit: "lime" },
-            pineappleChunks: { name: "pineapple chunks", calories: 82, unit: "cup" },
-            pear: { name: "pear", calories: 100, unit: "pear" },
-            watermelonCubed: { name: "watermelon cubed", calories: 46, unit: "cup" }
+        // Calorie data per standard serving size
+        const fruitCalories = {
+            'green-apple-small': { name: 'Green Apple - Small', calories: 55, unit: 'small apple' },
+            'green-apple-medium': { name: 'Green Apple - Medium', calories: 80, unit: 'medium apple' },
+            'green-apple-large': { name: 'Green Apple - Large', calories: 110, unit: 'large apple' },
+            'fuji-apple-small': { name: 'Fuji Apple - Small', calories: 55, unit: 'small apple' },
+            'fuji-apple-medium': { name: 'Fuji Apple - Medium', calories: 80, unit: 'medium apple' },
+            'fuji-apple-large': { name: 'Fuji Apple - Large', calories: 110, unit: 'large apple' },
+            'avocado-small': { name: 'Avocado - Small', calories: 200, unit: 'small avocado' },
+            'avocado-medium': { name: 'Avocado - Medium', calories: 250, unit: 'medium avocado' },
+            'avocado-large': { name: 'Avocado - Large', calories: 300, unit: 'large avocado' },
+            'dark-red-cherries': { name: 'Dark Red Cherries', calories: 4, unit: 'cherry' },
+            'frozen-blueberries': { name: 'Frozen Blueberries', calories: 80, unit: 'cup' },
+            'green-grapes': { name: 'Green Grapes', calories: 3, unit: 'grape' },
+            'lemon': { name: 'Lemon', calories: 17, unit: 'medium lemon' },
+            'lime': { name: 'Lime', calories: 20, unit: 'medium lime' },
+            'pineapple': { name: 'Pineapple', calories: 80, unit: 'cup chunks' },
+            'pear': { name: 'Pear', calories: 85, unit: 'medium pear' },
+            'watermelon': { name: 'Watermelon', calories: 46, unit: 'cup cubed' }
         };
-
-        const vegetableData = {
-            spinach: { name: "spinach", calories: 7, unit: "cup" },
-            kale: { name: "kale", calories: 33, unit: "cup" },
-            romaine: { name: "romaine", calories: 8, unit: "cup" },
-            hothouseCucumber: { name: "hothouse cucumber", calories: 45, unit: "cucumber" },
-            persianCucumber: { name: "persian cucumber", calories: 20, unit: "cucumber" },
-            celery: { name: "celery", calories: 6, unit: "stick" },
-            mediumTomato: { name: "medium tomato", calories: 22, unit: "tomato" },
-            cherryTomato: { name: "cherry tomato", calories: 3, unit: "tomato" },
-            redBellPepper: { name: "red bell pepper", calories: 37, unit: "pepper" },
-            rawBeetSmall: { name: "raw beet (small)", calories: 35, unit: "beet" },
-            rawBeetMedium: { name: "raw beet (medium)", calories: 44, unit: "beet" },
-            rawBeetLarge: { name: "raw beet (large)", calories: 58, unit: "beet" },
-            cookedBeetSmall: { name: "cooked beet (small)", calories: 25, unit: "beet" },
-            cookedBeetMedium: { name: "cooked beet (medium)", calories: 37, unit: "beet" },
-            cookedBeetLarge: { name: "cooked beet (large)", calories: 49, unit: "beet" },
-            sweetPotatoCubed: { name: "sweet potato cubed", calories: 103, unit: "cup" }
+        
+        const vegetableCalories = {
+            'spinach': { name: 'Spinach', calories: 7, unit: 'cup' },
+            'kale': { name: 'Kale', calories: 33, unit: 'cup chopped' },
+            'romaine': { name: 'Romaine', calories: 8, unit: 'cup chopped' },
+            'hothouse-cucumber': { name: 'Hothouse Cucumber', calories: 45, unit: 'whole cucumber' },
+            'persian-cucumber': { name: 'Persian Cucumber', calories: 20, unit: 'whole cucumber' },
+            'celery': { name: 'Celery', calories: 6, unit: 'stick' },
+            'medium-tomato': { name: 'Medium Tomato', calories: 22, unit: 'tomato' },
+            'cherry-tomato': { name: 'Cherry Tomato', calories: 3, unit: 'tomato' },
+            'red-bell-pepper': { name: 'Red Bell Pepper', calories: 37, unit: 'pepper' },
+            'raw-beet-small': { name: 'Raw Beet - Small', calories: 35, unit: 'small beet' },
+            'raw-beet-medium': { name: 'Raw Beet - Medium', calories: 60, unit: 'medium beet' },
+            'raw-beet-large': { name: 'Raw Beet - Large', calories: 85, unit: 'large beet' },
+            'cooked-beet-small': { name: 'Cooked Beet - Small', calories: 30, unit: 'small beet' },
+            'cooked-beet-medium': { name: 'Cooked Beet - Medium', calories: 50, unit: 'medium beet' },
+            'cooked-beet-large': { name: 'Cooked Beet - Large', calories: 70, unit: 'large beet' },
+            'sweet-potato': { name: 'Sweet Potato', calories: 114, unit: 'cup cubed raw' }
         };
-
+        
         let dailyItems = [];
         let itemIdCounter = 0;
-
+        
         function addFruit() {
-            const select = document.getElementById('fruitSelect');
-            const quantity = parseFloat(document.getElementById('fruitQuantity').value) || 1;
+            const fruitSelect = document.getElementById('fruit-select');
+            const quantityInput = document.getElementById('fruit-quantity');
             
-            if (!select.value) {
+            const selectedFruit = fruitSelect.value;
+            const quantity = parseFloat(quantityInput.value);
+            
+            if (!selectedFruit) {
                 alert('Please select a fruit');
                 return;
             }
             
-            const fruit = fruitData[select.value];
+            if (!quantity || quantity <= 0) {
+                alert('Please enter a valid quantity');
+                return;
+            }
+            
+            const fruit = fruitCalories[selectedFruit];
             const totalCalories = Math.round(fruit.calories * quantity);
             
-            const item = {
-                id: ++itemIdCounter,
+            const newItem = {
+                id: itemIdCounter++,
                 name: fruit.name,
-                quantity: quantity,
                 unit: fruit.unit,
-                calories: totalCalories,
-                unitCalories: fruit.calories,
-                type: 'fruit'
+                quantity: quantity,
+                caloriesPerUnit: fruit.calories,
+                totalCalories: totalCalories,
+                isEditing: false
             };
             
-            dailyItems.push(item);
-            updateDailyDisplay();
+            dailyItems.push(newItem);
+            updateDisplay();
             
             // Reset form
-            select.value = '';
-            document.getElementById('fruitQuantity').value = '1';
+            fruitSelect.value = '';
+            quantityInput.value = '1';
         }
-
+        
         function addVegetable() {
-            const select = document.getElementById('vegetableSelect');
-            const quantity = parseFloat(document.getElementById('vegetableQuantity').value) || 1;
+            const vegetableSelect = document.getElementById('vegetable-select');
+            const quantityInput = document.getElementById('vegetable-quantity');
             
-            if (!select.value) {
+            const selectedVegetable = vegetableSelect.value;
+            const quantity = parseFloat(quantityInput.value);
+            
+            if (!selectedVegetable) {
                 alert('Please select a vegetable');
                 return;
             }
             
-            const vegetable = vegetableData[select.value];
+            if (!quantity || quantity <= 0) {
+                alert('Please enter a valid quantity');
+                return;
+            }
+            
+            const vegetable = vegetableCalories[selectedVegetable];
             const totalCalories = Math.round(vegetable.calories * quantity);
             
-            const item = {
-                id: ++itemIdCounter,
+            const newItem = {
+                id: itemIdCounter++,
                 name: vegetable.name,
-                quantity: quantity,
                 unit: vegetable.unit,
-                calories: totalCalories,
-                unitCalories: vegetable.calories,
-                type: 'vegetable'
+                quantity: quantity,
+                caloriesPerUnit: vegetable.calories,
+                totalCalories: totalCalories,
+                isEditing: false
             };
             
-            dailyItems.push(item);
-            updateDailyDisplay();
+            dailyItems.push(newItem);
+            updateDisplay();
             
             // Reset form
-            select.value = '';
-            document.getElementById('vegetableQuantity').value = '1';
+            vegetableSelect.value = '';
+            quantityInput.value = '1';
         }
-
-        function editItem(id) {
-            const item = dailyItems.find(i => i.id === id);
-            if (!item) return;
+        
+        function updateDisplay() {
+            const totalCalories = dailyItems.reduce((sum, item) => sum + item.totalCalories, 0);
+            document.getElementById('total-calories').textContent = totalCalories;
             
-            const newQuantity = prompt(`Edit quantity for ${item.name}:`, item.quantity);
-            if (newQuantity === null) return;
-            
-            const quantity = parseFloat(newQuantity);
-            if (isNaN(quantity) || quantity <= 0) {
-                alert('Please enter a valid positive number');
-                return;
-            }
-            
-            item.quantity = quantity;
-            item.calories = Math.round(item.unitCalories * quantity);
-            updateDailyDisplay();
-        }
-
-        function removeItem(id) {
-            dailyItems = dailyItems.filter(item => item.id !== id);
-            updateDailyDisplay();
-        }
-
-        function updateDailyDisplay() {
-            const container = document.getElementById('dailyItems');
-            const totalElement = document.getElementById('totalDisplay');
+            const itemsList = document.getElementById('items-list');
             
             if (dailyItems.length === 0) {
-                container.innerHTML = '<div class="empty-message">No items added yet. Start adding ingredients above!</div>';
-                totalElement.textContent = 'Daily Total: 0 calories';
+                itemsList.innerHTML = '<p style="text-align: center; color: #666;">No items added yet</p>';
                 return;
             }
             
-            let html = '';
-            let totalCalories = 0;
-            
-            dailyItems.forEach(item => {
-                const unitText = item.quantity === 1 ? item.unit : 
-                    (item.unit === 'cherry' ? 'cherries' : 
-                     item.unit.endsWith('y') ? item.unit.slice(0, -1) + 'ies' : 
-                     item.unit + 's');
-                
-                html += `
-                    <div class="daily-item">
-                        <div class="item-description">
-                            ${item.quantity} ${unitText} ${item.name}
+            itemsList.innerHTML = dailyItems.map(item => {
+                if (item.isEditing) {
+                    return `
+                        <div class="item">
+                            <div class="item-info">
+                                <input type="number" class="edit-input" id="edit-${item.id}" value="${item.quantity}" min="0" step="0.25">
+                                ${item.quantity === 1 ? item.unit : item.unit + 's'}
+                            </div>
+                            <div class="item-calories">${item.totalCalories} cal</div>
+                            <div class="item-controls">
+                                <button class="save-btn" onclick="saveEdit(${item.id})">Save</button>
+                                <button class="cancel-btn" onclick="cancelEdit(${item.id})">Cancel</button>
+                            </div>
                         </div>
-                        <div class="item-calories">${item.calories} cal</div>
-                        <div>
-                            <button class="edit-btn" onclick="editItem(${item.id})">Edit</button>
-                            <button class="remove-btn" onclick="removeItem(${item.id})">Remove</button>
+                    `;
+                } else {
+                    return `
+                        <div class="item">
+                            <div class="item-info">${item.quantity} ${item.quantity === 1 ? item.unit : item.unit + 's'}</div>
+                            <div class="item-calories">${item.totalCalories} cal</div>
+                            <div class="item-controls">
+                                <button class="edit-btn" onclick="editItem(${item.id})">Edit</button>
+                                <button class="remove-btn" onclick="removeItem(${item.id})">Remove</button>
+                            </div>
                         </div>
-                    </div>
-                `;
-                totalCalories += item.calories;
-            });
+                    `;
+                }
+            }).join('');
+        }
+        
+        function editItem(itemId) {
+            const item = dailyItems.find(i => i.id === itemId);
+            if (item) {
+                item.isEditing = true;
+                updateDisplay();
+            }
+        }
+        
+        function saveEdit(itemId) {
+            const item = dailyItems.find(i => i.id === itemId);
+            const newQuantity = parseFloat(document.getElementById(`edit-${itemId}`).value);
             
-            container.innerHTML = html;
-            totalElement.textContent = `Daily Total: ${totalCalories} calories`;
+            if (!newQuantity || newQuantity <= 0) {
+                alert('Please enter a valid quantity');
+                return;
+            }
+            
+            item.quantity = newQuantity;
+            item.totalCalories = Math.round(item.caloriesPerUnit * newQuantity);
+            item.isEditing = false;
+            updateDisplay();
+        }
+        
+        function cancelEdit(itemId) {
+            const item = dailyItems.find(i => i.id === itemId);
+            if (item) {
+                item.isEditing = false;
+                updateDisplay();
+            }
+        }
+        
+        function removeItem(itemId) {
+            dailyItems = dailyItems.filter(item => item.id !== itemId);
+            updateDisplay();
         }
     </script>
 </body>
