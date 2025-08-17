@@ -612,6 +612,67 @@ function displaySearchResults(foods) {
             </div>`
         ).join('');
 }
+        async function showFoodDetails(fdcId, description) {
+    const apiKey = 'DjPZ89U2ZsqMgXbCVZznIezhDFpVoy5ion89iwkK';
+    const url = `https://api.nal.usda.gov/fdc/v1/food/${fdcId}?api_key=${apiKey}`;
+    
+    document.getElementById('search-results').innerHTML = 'Loading food details...';
+    
+    try {
+        const response = await fetch(url);
+        const food = await response.json();
+        
+        // Find calories in the nutrients
+        const calories = food.foodNutrients?.find(n => n.nutrient.name === 'Energy')?.amount || 0;
+        
+        document.getElementById('search-results').innerHTML = `
+            <div class="food-details">
+                <h4>${description}</h4>
+                <p><strong>Calories:</strong> ${Math.round(calories)} per 100g</p>
+                <p><strong>Category:</strong> 
+                    <select id="food-category">
+                        <option value="fruits">Fruits</option>
+                        <option value="vegetables">Vegetables</option>
+                        <option value="liquids">Liquids</option>
+                        <option value="proteins">Proteins</option>
+                        <option value="fats">Fats and Oils</option>
+                        <option value="grains">Grains</option>
+                        <option value="prepared">Prepared Foods</option>
+                    </select>
+                </p>
+                <p><strong>Unit:</strong> <input type="text" id="food-unit" value="100g" placeholder="e.g., cup, piece"></p>
+                <button onclick="addToDatabase('${description.replace(/'/g, "\\'")}', ${Math.round(calories)})">Add to My Database</button>
+                <button onclick="document.getElementById('search-results').innerHTML = ''">Cancel</button>
+            </div>
+        `;
+    } catch (error) {
+        document.getElementById('search-results').innerHTML = 'Failed to load food details.';
+    }
+}
+
+function addToDatabase(name, calories) {
+    const category = document.getElementById('food-category').value;
+    const unit = document.getElementById('food-unit').value || '100g';
+    
+    // Create a unique key for the food
+    const foodKey = name.toLowerCase().replace(/[^a-z0-9]/g, '-');
+    
+    // Add to allFoods object
+    allFoods[category][foodKey] = {
+        name: name,
+        calories: calories,
+        unit: unit
+    };
+    
+    alert(`${name} added to ${category} category!`);
+    document.getElementById('search-results').innerHTML = '';
+    document.getElementById('food-search').value = '';
+    
+    // Refresh the dropdown if that category is selected
+    if (document.getElementById('category-select').value === category) {
+        updateItemDropdown();
+    }
+}
     </script>
 </body>
 </html>
