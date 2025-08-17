@@ -224,7 +224,14 @@
             
             <button onclick="addItem()">Add to Daily Total</button>
         </div>
-        
+          <!-- ADD THIS NEW SECTION HERE -->
+        <div class="search-section">
+            <h3>Search & Add New Foods</h3>
+            <input type="text" id="food-search" placeholder="Search for a food (e.g., 'chicken breast')">
+            <button onclick="searchFood()">Search USDA Database</button>
+            <div id="search-results"></div>
+        </div>
+        <!-- END OF NEW SECTION -->
         <div class="daily-total">
             Daily Total: <span id="total-calories">0</span> calories
         </div>
@@ -568,6 +575,43 @@
                 closeAddIngredientModal();
             }
         }
+        async function searchFood() {
+    const query = document.getElementById('food-search').value.trim();
+    if (!query) {
+        alert('Please enter a food to search for');
+        return;
+    }
+    
+    const apiKey = 'DjPZ89U2ZsqMgXbCVZznIezhDFpVoy5ion89iwkK';
+    const url = `https://api.nal.usda.gov/fdc/v1/foods/search?query=${encodeURIComponent(query)}&api_key=${apiKey}&pageSize=5`;
+    
+    document.getElementById('search-results').innerHTML = 'Searching...';
+    
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+        displaySearchResults(data.foods || []);
+    } catch (error) {
+        document.getElementById('search-results').innerHTML = 'Search failed. Please try again.';
+        console.error('Search failed:', error);
+    }
+}
+
+function displaySearchResults(foods) {
+    const resultsDiv = document.getElementById('search-results');
+    
+    if (foods.length === 0) {
+        resultsDiv.innerHTML = '<p>No foods found. Try a different search term.</p>';
+        return;
+    }
+    
+    resultsDiv.innerHTML = '<h4>Click a food to see details:</h4>' + 
+        foods.map(food => 
+            `<div class="search-result" onclick="showFoodDetails(${food.fdcId}, '${food.description.replace(/'/g, "\\'")}')">
+                ${food.description}
+            </div>`
+        ).join('');
+}
     </script>
 </body>
 </html>
